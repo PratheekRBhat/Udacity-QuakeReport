@@ -27,4 +27,11 @@
         android:text="Mar 8, 2010"
         android:layout_weight="1"/>
 
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/time"
+        android:text="3:00 PM"
+        android:layout_weight="1"/>
+
 </LinearLayout>
