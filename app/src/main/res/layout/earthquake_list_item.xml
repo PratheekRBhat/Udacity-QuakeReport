@@ -16,7 +16,14 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/location"
+        android:id="@+id/offset_location"
+        android:text="30km S of"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:id="@+id/primary_location"
         android:text="San Francisco, CA"
         android:layout_weight="1"/>
 
