@@ -53,6 +53,9 @@ public class EarthquakeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        EarthquakeAsyncTask task = new EarthquakeAsyncTask();
+        task.execute(REQUEST_URL);
     }
 
     private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>>{
