@@ -17,6 +17,7 @@ package com.example.android.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,30 +26,54 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+    private static final String REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    private EarthquakeAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
         ListView earthquakeListView = findViewById(R.id.list);
-        final Earthquake_Adapter adapter = new Earthquake_Adapter(this, earthquakes);
-        earthquakeListView.setAdapter(adapter);
+        mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
+        earthquakeListView.setAdapter(mAdapter);
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Earthquake currentEarthquake = adapter.getItem(i);
+                Earthquake currentEarthquake = mAdapter.getItem(i);
                 Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
 
                 Intent intent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
                 startActivity(intent);
             }
         });
+    }
+
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>>{
+
+        @Override
+        protected List<Earthquake> doInBackground(String... urls) {
+            if (urls.length < 1 || urls[0] == null) {
+                return null;
+            }
+
+            List<Earthquake> result = QueryUtils.fetchEarthquakeData(urls[0]);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(List<Earthquake> data) {
+            mAdapter.clear();
+
+            if (data != null && !data.isEmpty()){
+                mAdapter.addAll(data);
+            }
+        }
     }
 }

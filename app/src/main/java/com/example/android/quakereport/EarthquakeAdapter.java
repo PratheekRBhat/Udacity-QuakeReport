@@ -20,10 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Earthquake_Adapter extends ArrayAdapter<Earthquake> {
+public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     private static final String LOCATION_SEPARATOR = " of ";
 
-    Earthquake_Adapter(Context context, List<Earthquake> earthquakes){
+    EarthquakeAdapter(Context context, List<Earthquake> earthquakes){
         super(context, 0, earthquakes);
     }
 
