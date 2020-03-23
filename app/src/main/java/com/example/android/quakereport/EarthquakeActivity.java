@@ -15,24 +15,21 @@
  */
 package com.example.android.quakereport;
 
-import android.content.AsyncTaskLoader;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Loader;
-
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +85,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<List<Earthquake>> loader, List<Earthquake> data) {
+    public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> data) {
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
@@ -101,26 +98,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     }
 
     @Override
-    public void onLoaderReset(@NonNull Loader loader) {
+    public void onLoaderReset(Loader loader) {
         mAdapter.clear();
     }
-
-   private class EarthquakeLoader extends AsyncTaskLoader<List<Earthquake>>{
-       private String mUrl;
-
-       public EarthquakeLoader(Context context, String url) {
-           super(context);
-           mUrl = url;
-       }
-
-        @Override
-       public List<Earthquake> loadInBackground() {
-            if (mUrl == null) {
-                return null;
-            }
-
-            List<Earthquake> result = QueryUtils.fetchEarthquakeData(mUrl);
-            return result;
-       }
-   }
 }
