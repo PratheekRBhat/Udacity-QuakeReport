@@ -17,9 +17,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.android.quakereport.EarthquakeActivity.LOG_TAG;
+class QueryUtils {
+    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
-public class QueryUtils {
     /**
      * Create a private constructor because no one should ever create a {@link QueryUtils} object.
      * This class is only meant to hold static variables and methods, which can be accessed
@@ -28,7 +28,7 @@ public class QueryUtils {
     private QueryUtils() {
     }
 
-    public static List<Earthquake> fetchEarthquakeData (String requestUrl){
+    static List<Earthquake> fetchEarthquakeData(String requestUrl){
         URL url = createUrl(requestUrl);
 
         String jsonResponse = null;
@@ -38,9 +38,7 @@ public class QueryUtils {
             Log.e(LOG_TAG, "Error creating HTTP Request.", e);
         }
 
-        List<Earthquake> earthquake = extractEarthquakes(jsonResponse);
-
-        return earthquake;
+        return extractEarthquakes(jsonResponse);
     }
 
     /**
